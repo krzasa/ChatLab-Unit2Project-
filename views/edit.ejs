@@ -1,0 +1,8 @@
+<%- include('./partials/nav') %> 
+<form action="/blog/<%= post._id %>/?_method=PUT" method="POST">
+    <h3><%= post.name%></h3>
+
+    <label for="post-body">Content</label><br>
+    <textarea name="post-body" id="post-body" cols="30" rows="10"><%= post.message %> old text</textarea><br>
+    <button type="submit" >Submit</button>
+</form>

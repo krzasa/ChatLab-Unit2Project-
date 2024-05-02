@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <%- include('../partials/nav')%>
+    <h1>Log In!</h1>
+    <form action="/auth/sign-in" method="POST">
+      <label for="username">Username:</label>
+      <input type="text" name="name" id="name" />
+      <label for="email">email:</label>
+      <input type="email" name="email" id="email" />
+      <label for="confirmPassword">Confirm email:</label>
+      <input type="email" name="confirmEmail" id="confirmEmail" />
+      <button type="submit">Sign in</button>
+    </form>
+  </body>
+</html>

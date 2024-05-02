@@ -1,0 +1,16 @@
+<%- include('partials/nav')%>
+
+SHOW PAGE
+
+<div >
+
+    <h1>Chat Room </h1>
+    <h3>Name: <%= post.name %></h3>
+    <p>Post: <%= post.message %></p>
+    
+    <form action="/chat/<%= post._id%>/?_method=DELETE" method="POST">
+        <button type="submit" ">Delete</button>
+        <a href="/chat/<%= post._id%>/edit" >Edit</a>
+    </form>
+        
+    </div>

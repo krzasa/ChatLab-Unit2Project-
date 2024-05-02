@@ -7,8 +7,18 @@
   </head>
   <body>
     <%- include('./partials/nav') %> 
-    <h1>Welcome to the Chat app!</h1>
+    <% if (user) { %>
+      <h1>Welcome to the app, <%= user.name %>!</h1>
+      <% } else { %>
+      <h1>Welcome to the app, guest.</h1>
+      <% } %>
     <p>An app for chatting with your friends </p>
+
+    
+    <% allPosts.forEach(chat => { %>
+      <h4> <%= chat.name %> : <%= chat.message %> </h4>
+     
+    <% }) %>
 
 
 

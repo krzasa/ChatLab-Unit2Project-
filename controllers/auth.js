@@ -1,22 +1,27 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const User = require("../models/user.js");
 const bcrypt = require("bcrypt");
 
-
+// sign in with bigolkielbasa and test@email.com
 router.post("/sign-in", async (req, res) => {
-    // First, get the user from the database
-    const userInDatabase = await User.findOne({ name: req.body.name });
-    if (!userInDatabase) {
-      return res.send("Login failed. Please try again.");
-    }
+  // First, get the user from the database
+  const userInDatabase = await User.findOne({ name: req.body.name });
+  console.log(userInDatabase.name);
+  //bigolkielbasa
+  if (!userInDatabase.name) {
+    return res.send("Login failed. Please try again.");
+  }
+
   
-    
-    // console.log(req.name);
-    // There is a user Time to make a session!
-    req.session.user = {
-      username: userInDatabase.username,
-    };
+
+  // There is a user  Time to make a session!
+  
+  // If there is other data you want to save to `req.session.user`, do so here!
+  req.session.user = {
+    username: userInDatabase.name,
+  };
   
     res.redirect("/");
   });

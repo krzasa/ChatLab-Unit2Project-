@@ -2,37 +2,59 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const app = express();
+const http = require("http").createServer(app);
+const options = { /* ... */ };
+const io = require("socket.io")(http, options);
 const session = require('express-session')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mongoose = require("mongoose");
 const User = require("./models/user.js");
 const Chat = require("./models/chat.js");
-const router = require("./controllers/auth.js");
-app.use(express.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
+// const router = require("./controllers/auth.js");
+
 const authController = require("./controllers/auth.js");
-app.use(methodOverride("_method"));
 app.use(morgan('dev'));
 
+app.use(express.urlencoded({ extended: false }));
 
+app.use("/auth", authController);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+})
+);
 
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("connected", () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
   });
 
+  io.on('connection', (socket) => {   // This will emit the event to all connected sockets
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
 
 
+    
+    app.set('views', __dirname + '/views')
+    // Set plain HTML as our template engine, which requires EJS
+    .engine('html', require('ejs').renderFile)
+    // Ensure that the routes below aren't overwritten by static files
+    
+    
     // GET	/chat	Read	Display a list of all posts.
-
   app.get("/", async (req, res) => {
     const allPosts = await Chat.find({});
     res.render('index.ejs', {allPosts, 
-    user: req.username,})
-    console.log(req.username);
+    user: req.session.user,}),
+    console.log(req.user);
     
   });
-  app.use("/auth", authController);
+  
 
   app.get('/chat', async (req, res)=>{
     const allPosts = await Chat.find({});
@@ -82,14 +104,13 @@ app.delete('/chat/:id', async (req, res)=>{
 })
 
 
-
-app.listen(3010, () => {
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+http.listen(3010, () => {
     console.log("Listening on port 3010");
   });
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);

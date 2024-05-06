@@ -27,13 +27,17 @@ app.use(session({
 
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("connected", () => {
-    console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
-  });
+
+  console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
+});
+  mongoose.connection.on ("error", (error) =>{
+    console.log('mongoDB connection error ', error );
+  })
 
   io.on('connection', (socket) => {   // This will emit the event to all connected sockets once the connection turns on
   socket.on('chat message', (msg) => {
     
-    io.emit('chat message', msg);   // maybe add "req.session.user+ ": " +" before message?
+  io.emit('chat message', msg);   // maybe add "req.session.user+ ": " +" before message?
     // console.log(msg+ "test"); returns message test and null test 
   });
   socket.on('typing', (data) => {

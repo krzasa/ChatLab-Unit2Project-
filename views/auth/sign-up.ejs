@@ -6,15 +6,15 @@
     <title>Sign Up</title>
   </head>
   <body>
-    <%- include('../partials/nav')%>
+    <%- include('../partials/nav') %> 
     <h1>Create a new account!</h1>
     <form action="/auth/sign-up" method="POST">
       <label for="username">Username:</label>
-      <input type="text" name="name" id="name" />
-      <label for="email">email:</label>
-      <input type="email" name="email" id="email" />
-      <label for="confirmPassword">Confirm email:</label>
-      <input type="email" name="confirmEmail" id="confirmEmail" />
+      <input type="text" name="username" id="username" />
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" />
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" />
       <button type="submit">Sign up</button>
     </form>
   </body>

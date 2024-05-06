@@ -12,14 +12,12 @@ const mongoose = require("mongoose");
 const User = require("./models/user.js");
 const Chat = require("./models/chat.js");
 app.set('view engine', 'ejs');
-// const router = require("./controllers/auth.js");
-
 const authController = require("./controllers/auth.js");
 app.use(morgan('dev'));
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/auth", authController);
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -55,7 +53,8 @@ mongoose.connection.on("connected", () => {
     
   });
   
-
+  app.use("/auth", authController)
+  
   app.get('/chat', async (req, res)=>{
     const allPosts = await Chat.find({});
     // console.log(allPosts);

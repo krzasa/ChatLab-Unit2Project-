@@ -3,7 +3,11 @@ dotenv.config();
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
-const options = { /* ... */ };
+const options = { cors: { origin: process.env.NODE_EVV === "production" ? false :
+["http://localhost:3010"] }  // this keeps the the view only to people who access the node enviornment by the localhost
+// tthe question mark is a shortcut for an if statement 
+  
+}
 const io = require("socket.io")(http, options);
 const session = require('express-session')
 const morgan = require('morgan')
@@ -30,11 +34,18 @@ mongoose.connection.on("connected", () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
   });
 
-  io.on('connection', (socket) => {   // This will emit the event to all connected sockets
+  io.on('connection', (socket) => {   // This will emit the event to all connected sockets once the connection turns on
   socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+    
+    io.emit('chat message', msg);   // maybe add "req.session.user+ ": " +" before message?
+    // console.log(msg+ "test"); returns message test and null test 
   });
+  socket.on('typing', (data) => {
+    socket.broadcast.emit('typing', data)
+    
 });
+});
+
 
 
     
@@ -48,18 +59,13 @@ mongoose.connection.on("connected", () => {
   app.get("/", async (req, res) => {
     const allPosts = await Chat.find({});
     res.render('index.ejs', {allPosts, 
-    user: req.session.user,}),
-    console.log(req.user);
+    user: req.session.user,})
+    
     
   });
   
   app.use("/auth", authController)
   
-  app.get('/chat', async (req, res)=>{
-    const allPosts = await Chat.find({});
-    // console.log(allPosts);
-    res.render('index.ejs', {allPosts})
-  })
 
 // GET	/chat/new	Read	new	Show a form to add a new post.
   app.get("/chat/new", (req, res) => {
@@ -71,7 +77,7 @@ app.post('/chat', async (req, res)=>{
       name: req.body['username'],
       message: req.body['message']
   })
-  console.log(req.body);
+  // console.log(req.body);
   res.redirect('/chat')
 })
 

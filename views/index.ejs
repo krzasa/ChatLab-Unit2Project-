@@ -45,6 +45,7 @@
       #form > button:focus {box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);}
       #form > button:hover {box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);}
       #status {  color: white;  width: 25%;}
+      /* Can't figure out why the chat deforms when theres no text or randomly  */
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { border-radius: 5%; border-color: #FFFFFF; border-style: solid; width: fit-content;}
@@ -92,7 +93,7 @@
 
   form.addEventListener('submit', function(e) {  // this is the code that sends the chat messages, need to figure out how to add ejs variable to it to bake the name of who is logged in 
     e.preventDefault();
-    if (input.value) {
+    if (input.value != "") {
       socket.emit('chat message', input.value);
       input.value = user.innerHTML+ ': ';
     }

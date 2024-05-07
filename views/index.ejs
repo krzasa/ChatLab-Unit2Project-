@@ -58,9 +58,9 @@
     <div id="container">
       <%- include('./partials/nav') %> 
     <% if (user) { %>
-      <h1 class="text-orange-400">Welcome to the app, </h1> <h1 id="user"><%= user.username %></h1>
+      <h1 class="text-orange-400">Welcome to the chat, </h1> <h1 id="user"><%= user.username %></h1>
       <% } else { %>
-        <h1>Welcome to the app,</h1><h1 id="user">Guest</h1>
+        <h1>Welcome to the chat,</h1><h1 id="user">Guest</h1>
       <% } %>
       <p class="text-red-600">An app for chatting with your friends </p>
       <p id="status" > </p>

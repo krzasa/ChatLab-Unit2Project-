@@ -10,7 +10,7 @@
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF; }
       a, a:hover, a:active, a:visited { color: white; }
-      #container {background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradient 15s ease infinite; height: 100vh;}
+      #container {background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradient 15s ease infinite; min-height: 100vh;}
       @keyframes gradient {
                     0% {
                       background-position: 0% 50%;
@@ -75,7 +75,7 @@
 
       />
       <button>Send</button>  
-    </div>
+    
     <!-- Sockets scripts must always be at the bottom of the body  -->
     <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -132,6 +132,7 @@ socket.on('typing', (data) =>{
         });
     </script>
     <!-- This code above is needed to communicate with the socket server and give terminal feedback when it connects/disconnects  -->
+  </div>
   </body>
 </html>
 

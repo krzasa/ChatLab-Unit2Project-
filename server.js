@@ -35,15 +35,16 @@ mongoose.connection.on("connected", () => {
   })
 
   io.on('connection', (socket) => {   // This will emit the event to all connected sockets once the connection turns on
-  socket.on('chat message', (msg) => {
+    socket.on('chat message', (msg) => {
     
-  io.emit('chat message', msg);   // maybe add "req.session.user+ ": " +" before message?
+        io.emit('chat message', msg);   // maybe add "req.session.user+ ": " +" before message?
     // console.log(msg+ "test"); returns message test and null test 
-  });
-  socket.on('typing', (data) => {
-    socket.broadcast.emit('typing', data)
+    });
+    socket.on('typing', (data) => {
+      socket.broadcast.emit('typing', data)
     
-});
+    });
+
 });
 
 

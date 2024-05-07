@@ -9,8 +9,7 @@ const session = require('express-session')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mongoose = require("mongoose");
-const User = require("./models/user.js");
-const Chat = require("./models/chat.js");
+
 app.set('view engine', 'ejs');
 const authController = require("./controllers/auth.js");
 app.use(morgan('dev'));
@@ -30,9 +29,9 @@ mongoose.connection.on("connected", () => {
 
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
-  mongoose.connection.on ("error", (error) =>{
-    console.log('mongoDB connection error ', error );
-  })
+  // mongoose.connection.on ("error", (error) =>{
+  //   console.log('mongoDB connection error ', error );
+  // })
 
   io.on('connection', (socket) => {   // This will emit the event to all connected sockets once the connection turns on
     socket.on('chat message', (msg) => {
@@ -48,7 +47,8 @@ mongoose.connection.on("connected", () => {
 });
 
 
-
+const User = require("./models/user.js");
+const Chat = require("./models/chat.js");
     
     app.set('views', __dirname + '/views')
     // Set plain HTML as our template engine, which requires EJS
@@ -116,6 +116,8 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 });
+
+
 http.listen(3010, () => {
     console.log("Listening on port 3010");
   });

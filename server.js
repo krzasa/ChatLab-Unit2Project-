@@ -4,7 +4,10 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const options = { cors: { origin: process.env.NODE_EVV === "production" ? false :
-["http://localhost:3010"] }}
+["http://localhost:3010"] }  // this keeps the the view only to people who access the node enviornment by the localhost
+// tthe question mark is a shortcut for an if statement 
+  
+}
 const io = require("socket.io")(http, options);
 const session = require('express-session')
 const morgan = require('morgan')

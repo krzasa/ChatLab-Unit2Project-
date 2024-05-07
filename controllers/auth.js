@@ -24,8 +24,8 @@ router.post("/sign-up", async (req, res) => {
       
 // validation logic
 
-const user = await User.create(req.body);
-res.send(`Thanks for signing up ${user.username}`);
+  const user = await User.create(req.body);
+  res.render('auth/sign-in.ejs')
 
   });
 
@@ -59,6 +59,7 @@ router.post("/sign-in", async (req, res) => {
   
     res.redirect("/");
   });
+
   router.get("/sign-out", (req, res) => {
     req.session.destroy();
     res.redirect("/");

@@ -3,13 +3,15 @@ dotenv.config();
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
-const options = { /* ... */ };
+const options = { cors: { origin: process.env.NODE_EVV === "production" ? false :
+["http://localhost:3010"] }}
 const io = require("socket.io")(http, options);
 const session = require('express-session')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mongoose = require("mongoose");
-
+const User = require("./models/user.js");
+const Chat = require("./models/chat.js");
 app.set('view engine', 'ejs');
 const authController = require("./controllers/auth.js");
 app.use(morgan('dev'));
@@ -47,8 +49,7 @@ mongoose.connection.on("connected", () => {
 });
 
 
-const User = require("./models/user.js");
-const Chat = require("./models/chat.js");
+
     
     app.set('views', __dirname + '/views')
     // Set plain HTML as our template engine, which requires EJS
@@ -83,7 +84,6 @@ app.post('/chat', async (req, res)=>{
       name: req.body['username'],
       message: req.body['message']
   })
-  console.log(req.body);
   res.redirect('/chat')
 })
 

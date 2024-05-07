@@ -14,7 +14,7 @@
       #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
+      #status {  color: black;  width: 25%;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
@@ -25,17 +25,24 @@
 
     <%- include('./partials/nav') %> 
     <% if (user) { %>
-      <h1>Welcome to the app, <%= user.username %>!</h1>
+      <h1 class="text-orange-400">Welcome to the app, </h1> <h3 id="user"><%= user.username %></h3>
       <% } else { %>
-      <h1>Welcome to the app, guest.</h1>
+        <h1>Welcome to the app,</h1><h3 id="user">Guest</h3>
       <% } %>
-    <p>An app for chatting with your friends </p>
-
+      <p class="text-red-600">An app for chatting with your friends </p>
+      <p id="status" > </p>
     
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+      <input id="input" autocomplete="off" value= 
+      <% if (user) { %>
+        " <%= user.username %>: " 
+        <% } else { %>
+          "Guest: "
+        <% } %>
+
+      />
+      <button>Send</button>  
     <!-- Sockets scripts must always be at the bottom of the body  -->
     <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -44,23 +51,41 @@
   const socket = io();
 
   let messages = document.getElementById('messages');
+  // let handle = placeholder need a way to call ejs
   let form = document.getElementById('form');
+  let user = document.getElementById('user');   // calling for the ejs user thing
+  let status = document.getElementById('status');
   let input = document.getElementById('input');
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', function(e) {  // this is the code that sends the chat messages, need to figure out how to add ejs variable to it to bake the name of who is logged in 
     e.preventDefault();
     if (input.value) {
       socket.emit('chat message', input.value);
-      input.value = '';
+      input.value = user.innerHTML+ ': ';
     }
   });
 
-  socket.on('chat message', function(msg) {
+  socket.on('chat message', function(msg) {  // handling chat event
     var item = document.createElement('li');
-    item.textContent = msg;
+    item.textContent = msg;   // this adds the text to the chat board through dom events, possible area to add baked in name 
     messages.appendChild(item);
+    status.innerHTML = ''  // this clears the status bar once you submit
     window.scrollTo(0, document.body.scrollHeight);
   });
+  form.addEventListener('keypress', ()=>{
+  socket.emit('typing', user.innerHTML) // placeholder for ejs user 
+  })
+
+ 
+// Listen for events
+socket.on('typing', (data) =>{
+    if (data) {
+      status.innerHTML = '<p><em>' + data + ' is typing...</em></p>';
+    } else {
+      status.innerHTML = ''
+    }
+});
+
 </script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>

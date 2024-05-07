@@ -3,7 +3,7 @@ dotenv.config();
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
-const options = {/* */ }
+const options = { /* ... */ };
 const io = require("socket.io")(http, options);
 const session = require('express-session')
 const morgan = require('morgan')
@@ -60,13 +60,18 @@ const Chat = require("./models/chat.js");
   app.get("/", async (req, res) => {
     const allPosts = await Chat.find({});
     res.render('index.ejs', {allPosts, 
-    user: req.session.user,})
-    
+    user: req.session.user,}),
+    console.log(req.user);
     
   });
   
   app.use("/auth", authController)
   
+  app.get('/chat', async (req, res)=>{
+    const allPosts = await Chat.find({});
+    // console.log(allPosts);
+    res.render('index.ejs', {allPosts})
+  })
 
 // GET	/chat/new	Read	new	Show a form to add a new post.
   app.get("/chat/new", (req, res) => {
@@ -78,7 +83,7 @@ app.post('/chat', async (req, res)=>{
       name: req.body['username'],
       message: req.body['message']
   })
-  // console.log(req.body);
+  console.log(req.body);
   res.redirect('/chat')
 })
 

@@ -21,7 +21,11 @@ router.post("/sign-up", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
       req.body.password = hashedPassword;
       
-    res.redirect("/sign-in");
+      
+// validation logic
+
+const user = await User.create(req.body);
+res.send(`Thanks for signing up ${user.username}`);
 
   });
 
@@ -53,11 +57,6 @@ router.post("/sign-in", async (req, res) => {
       username: userInDatabase.username,
     };
   
-    res.redirect("/");
-  });
-
-router.get("/sign-out", (req, res) => {
-    req.session.destroy();
     res.redirect("/");
   });
 
